@@ -14,9 +14,9 @@ import (
 func NewClient() *ClientInstance {
 	tr := &http.Transport{
 		MaxIdleConnsPerHost: 1024,
-		TLSHandshakeTimeout: 20 * time.Second,
+		TLSHandshakeTimeout: 50 * time.Second,
 	}
-	return &ClientInstance{client: &http.Client{Timeout: 20 * time.Second, Transport: tr}}
+	return &ClientInstance{client: &http.Client{Timeout: 50 * time.Second, Transport: tr}}
 }
 
 // ClientInstance - Инстанс клиента

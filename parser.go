@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"time"
 )
 
 // BoardParserParams - параметры для парсинга
@@ -47,6 +48,9 @@ func (bp *BoardParser) ParseFilesTask(params *BoardParserParams) []*FileInsert {
 
 	threads := bp.ParseBoard(params.boardSlug).Threads
 	for _, thread := range threads {
+
+		// FUCK ABU
+		time.Sleep(10 * time.Second)
 
 		posts := bp.ParseThread(params.boardSlug, thread.Num)
 		for _, post := range posts {
