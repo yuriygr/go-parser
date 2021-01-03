@@ -1,4 +1,71 @@
-package main
+package boards
+
+// Board - Структура чана
+type Board struct {
+	Name       string
+	URLAddress string
+	Adapter    AdapterInterface
+}
+
+// GetBoard - Получение раздела
+func (b *Board) GetBoard(request BoardRequest) (CompactBoard, error) {
+	return b.Adapter.GetBoard(request)
+}
+
+// GetThread - Получение треда
+func (b *Board) GetThread(request ThreadRequest) ([]ThreadWithPosts, error) {
+	return b.Adapter.GetThread(request)
+}
+
+// GetLink - Получение ссылки на что-то
+func (b *Board) GetLink(request string) string {
+	return b.Adapter.GetLink(request)
+}
+
+// AdapterInterface - Интерфейс портала
+// Каждый адаптер может добывать нужные данные как хочет,
+// главное чтобы в нужном формате
+type AdapterInterface interface {
+	GetBoard(BoardRequest) (CompactBoard, error)
+	GetThread(ThreadRequest) ([]ThreadWithPosts, error)
+	GetLink(string) string
+}
+
+// FileInsert - Структура файла для вставки в БД
+type FileInsert struct {
+	ID        int    `db:"v.id"`
+	URL       string `db:"v.url"`
+	Type      string `db:"v.type"`
+	Filesize  int    `db:"v.filesize"`
+	Width     int    `db:"v.width"`
+	Height    int    `db:"v.height"`
+	Md5       string `db:"v.md5"`
+	Name      string `db:"v.name"`
+	Board     string `db:"v.board"`
+	Thread    string `db:"v.thread"`
+	CreatedAt int64  `db:"v.created_at"`
+}
+
+// BoardParserParams - параметры для парсинга
+type BoardParserParams struct {
+	BoardSlug string
+	FileType  string
+}
+
+// ThreadRequest -
+type ThreadRequest struct {
+	Board        string
+	ThreadNumber string
+}
+
+// BoardRequest -
+type BoardRequest struct {
+	Board string
+}
+
+/**
+ * sadas
+ */
 
 type CompactBoard struct {
 	Board   string `json:"board"`
