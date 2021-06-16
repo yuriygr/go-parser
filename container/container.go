@@ -1,6 +1,9 @@
 package container
 
 import (
+	"os"
+
+	"github.com/jmoiron/sqlx"
 	"github.com/yuriygr/go-loggy"
 	"github.com/yuriygr/go-parser/services"
 )
@@ -11,15 +14,16 @@ type Container struct {
 	Client  *services.Client
 	Config  *services.Config
 	Logger  *loggy.Logger
-	Storage *services.Storage
+	Storage *sqlx.DB
 }
 
 // NewContainer - Собираем зависимости
 func NewContainer() *Container {
-	config := services.NewConfig()
+	config := services.NewConfig(os.Getenv("GORKI_PATH"))
+
 	client := services.NewClient()
-	logger := loggy.NewLogger()
-	storage := services.NewStorage(config)
+	logger := loggy.NewLogger(loggy.LoggerConfig{})
+	storage := services.NewStorage(config, logger)
 
 	return &Container{client, config, logger, storage}
 }

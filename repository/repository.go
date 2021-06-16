@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/jmoiron/sqlx"
 	"github.com/yuriygr/go-parser/boards"
 	"github.com/yuriygr/go-parser/container"
-	"github.com/yuriygr/go-parser/services"
 )
 
 // NewRepository - Создаем новый парсер
@@ -16,7 +16,7 @@ func NewRepository(container *container.Container) *Repository {
 
 // Repository - Его величество Репозиторий
 type Repository struct {
-	storage *services.Storage
+	storage *sqlx.DB
 }
 
 // CreateFile - Вставка данных че еще тут написать то

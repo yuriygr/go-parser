@@ -1,21 +1,32 @@
 package services
 
 import (
-	"os"
+	"fmt"
+	"log"
+
+	"github.com/BurntSushi/toml"
 )
 
 // NewConfig - Формируем конфиг
-func NewConfig() *Config {
-	config := &Config{}
-	config.Storage.DSN = os.Getenv("DB_DSN")
-
+func NewConfig(path string) (config *Config) {
+	if _, err := toml.DecodeFile(fmt.Sprintf("%sconfig.toml", path), &config); err != nil {
+		log.Fatalln(err)
+	}
+	config.Application.Path = path
 	return config
 }
 
 // Config - Конфигурационный файл
 type Config struct {
-	// TODO: Исправить с DSN на что-то более понятное
+	Application struct {
+		FirstMessage string
+		Status       string
+		Path         string
+	}
+
 	Storage struct {
-		DSN string
+		Driver       string
+		DSN          string
+		MaxOpenConns int
 	}
 }

@@ -3,5 +3,4 @@
 .vscode
 go.sum
 server
-debug
-HowTo.md
+config.toml

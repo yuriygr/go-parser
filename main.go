@@ -26,9 +26,11 @@ func main() {
 	repository := repository.NewRepository(container)
 	dvach := dvach.BuildBoard(container)
 
-	// Run tusk on startup
-	go parseFiles(dvach, []string{"b", "po"})
-	//go actualizeFiles(repository, container)
+	// Run task on startup in dev
+	if container.Config.Application.Status == "dev" {
+		go parseFiles(dvach, []string{"b", "po"})
+		go actualizeFiles(repository, container)
+	}
 
 	// Use cron it's overkill, but
 	// @link https://stackoverflow.com/a/28886762
@@ -139,8 +141,8 @@ func handleChain(logger *loggy.Logger) {
 		select {
 		case entry := <-successChain:
 			logger.Success(entry)
-		case entry := <-errorsChain:
-			logger.Error(entry)
+		//case entry := <-errorsChain:
+		//logger.Error(entry)
 		case entry := <-infoChain:
 			logger.Info(entry)
 		}
